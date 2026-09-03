@@ -12,6 +12,7 @@
   ansible.builtin.shell:
     cmd: "cp app.js app.js.bkup.{{ now(fmt='%Y-%m-%d') }}"
     chdir: /home/ec2-user/node_app
+  become: yes
 
 - name: Stop POS Application 
   ansible.builtin.shell:
