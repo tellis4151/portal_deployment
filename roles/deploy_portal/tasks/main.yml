@@ -7,6 +7,7 @@
   ansible.builtin.shell:
     cmd: "cp index.html index.html.bkup.{{ now(fmt='%Y-%m-%d') }}"
     chdir: /home/ec2-user/node_app/public
+  become: true
 
 - name: Backup existing portal js
   ansible.builtin.shell:
