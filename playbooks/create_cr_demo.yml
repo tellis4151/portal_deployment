@@ -1,0 +1,21 @@
+---
+- name: Create ServiceNow Change Request
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+  - name: Create Change Request - Deplying updated HR Portal Code
+    servicenow.itsm.change_request:
+#      instance: 
+#        host: "{{ host }}"
+#        username: "{{ username }}"
+#        password: "{{ password }}"
+      type: standard
+      state: new
+      short_description: Deploying updated HR Portal Code
+      description: Deploy updated style sheet changes to HR Portal
+      priority: moderate
+      category: Applications Software
+      risk: low
+      impact: low
+      assignment_group: Application Development

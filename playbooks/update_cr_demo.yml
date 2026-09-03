@@ -1,0 +1,29 @@
+---
+- name: Update Task in CR
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+  - name: Create Order System Incident
+    servicenow.itsm.change_request_info:
+#      instance: 
+#        host: "{{ host }}"
+#        username: "{{ username }}"
+#        password: "{{ password }}"
+      query:
+        - short_description: LIKE Deploying updated HR Portal Code
+    register: results
+
+  - name: Print out Incident info 
+    debug:
+      var: results
+
+  - name: Update task
+    servicenow.itsm.change_request:
+      change_request_number: "{{ results.records[0].number }}"
+#      change_request_number: "{{ change_number }}"
+      type: implementation
+      state: work_in_progress
+      other:
+        work_notes: "Automated execution by AAP failed, please review the workflow"
+    register: updated_cr
