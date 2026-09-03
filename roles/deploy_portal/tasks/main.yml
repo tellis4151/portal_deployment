@@ -15,7 +15,7 @@
     chdir: /home/ec2-user/node_app
   become: true
 
-- name: Stop POS Application 
+- name: Stop HR Portal Application 
   ansible.builtin.shell:
     cmd: /home/ec2-user/node_app/stop_node.sh
     chdir: /home/ec2-user/node_app
