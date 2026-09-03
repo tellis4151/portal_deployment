@@ -1,0 +1,5 @@
+---
+- name: Start node js application 
+  ansible.builtin.shell:
+    cmd: /home/ec2-user/node_app/node.sh
+    chdir: /home/ec2-user/node_app

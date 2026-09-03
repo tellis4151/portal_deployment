@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Internal Portal</title>
+  <style>
+    :root {
+      --bg-primary: #f4f6f9;
+      --bg-card: #ffffff;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --border: #e5e7eb;
+      --sidebar-width: 240px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Navigation */
+    aside {
+      width: var(--sidebar-width);
+      background-color: #1e293b;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+    }
+
+    .brand {
+      padding: 1.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #334155;
+    }
+
+    .nav-links {
+      list-style: none;
+      padding: 1rem 0;
+      flex-grow: 1;
+    }
+
+    .nav-links li a {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .nav-links li a:hover, .nav-links li.active a {
+      background-color: #334155;
+      color: #fff;
+    }
+
+    /* Header & Main Area */
+    .wrapper {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: var(--bg-card);
+      height: 64px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .search-bar input {
+      padding: 0.5rem 1rem;
+      width: 300px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      outline: none;
+      font-size: 0.9rem;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    /* Dashboard Content */
+    main {
+      padding: 2rem;
+      max-width: 1200px;
+    }
+
+    .welcome-banner {
+      margin-bottom: 2rem;
+    }
+
+    .welcome-banner h1 {
+      font-size: 1.75rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .welcome-banner p {
+      color: var(--text-muted);
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    /* Application Grid */
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .app-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.15s, box-shadow 0.15s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .app-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .app-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      background-color: #eff6ff;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .app-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .app-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Layout Columns */
+    .dashboard-columns {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+
+    .announcement-item {
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .announcement-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .announcement-item h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .announcement-item p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .announcement-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    /* Quick Links List */
+    .quick-links-list {
+      list-style: none;
+    }
+
+    .quick-links-list li {
+      margin-bottom: 0.75rem;
+    }
+
+    .quick-links-list a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .quick-links-list a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <aside>
+    <div class="brand">Nexus Corp</div>
+    <ul class="nav-links">
+      <li class="active"><a href="#">Dashboard</a></li>
+      <li><a href="#">Apps & Tools</a></li>
+      <li><a href="#">Employee Directory</a></li>
+      <li><a href="#">IT Support</a></li>
+      <li><a href="#">Settings</a></li>
+    </ul>
+  </aside>
+
+  <div class="wrapper">
+    <header>
+      <div class="search-bar">
+        <input type="text" id="appSearch" placeholder="Search applications, docs, employees..." onkeyup="filterApps()">
+      </div>
+      <div class="user-profile">
+        <div class="avatar">JD</div>
+        <span style="font-size: 0.9rem; font-weight: 500;">Jane Doe</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="welcome-banner">
+        <h1>Welcome back, Jane</h1>
+        <p>Access your workplace applications, resources, and company updates.</p>
+      </section>
+
+      <h2 class="section-title">Applications</h2>
+      <div class="app-grid" id="appGrid">
+        <a href="#" class="app-card">
+          <div class="app-icon">HR</div>
+          <div>
+            <h3>HR Portal</h3>
+            <p>Manage benefits, PTO requests, and view paystubs.</p>
+          </div>
+        </a>
+        <a href="#" class="app-card">
+          <div class="app-icon">IT</div>
+          <div>
+            <h3>Helpdesk</h3>
+            <p>Submit IT hardware, software, and access tickets.</p>
+          </div>
+        </a>
+        <a href="#" class="app-card">
+          <div class="app-icon">EX</div>
+          <div>
+            <h3>Expense Reporting</h3>
+            <p>Submit business expenses and track reimbursement status.</p>
+          </div>
+        </a>
+        <a href="#" class="app-card">
+          <div class="app-icon">BI</div>
+          <div>
+            <h3>Analytics Dashboard</h3>
+            <p>View business metrics, KPIs, and department reports.</p>
+          </div>
+        </a>
+        <a href="#" class="app-card">
+          <div class="app-icon">CR</div>
+          <div>
+            <h3>CRM System</h3>
+            <p>Manage customer accounts, leads, and sales pipelines.</p>
+          </div>
+        </a>
+        <a href="#" class="app-card">
+          <div class="app-icon">KB</div>
+          <div>
+            <h3>Knowledge Base</h3>
+            <p>Access company policies, SOPs, and internal documentation.</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="dashboard-columns">
+        <div class="panel">
+          <h2 class="section-title">Company Announcements</h2>
+          <div class="announcement-item">
+            <div class="announcement-date">October 24, 2026</div>
+            <h4>Q4 Town Hall Meeting Scheduled</h4>
+            <p>Join us this Thursday at 2:00 PM EST for the quarterly company updates and Q&A session.</p>
+          </div>
+          <div class="announcement-item">
+            <div class="announcement-date">October 18, 2026</div>
+            <h4>Annual Open Enrollment Ends Soon</h4>
+            <p>Please finalize your health benefit selections in the HR Portal before November 1st.</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 class="section-title">Quick Links</h2>
+          <ul class="quick-links-list">
+            <li><a href="#">→ Submit Timecard</a></li>
+            <li><a href="#">→ Book a Conference Room</a></li>
+            <li><a href="#">→ Company Travel Policy (PDF)</a></li>
+            <li><a href="#">→ Security Awareness Training</a></li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function filterApps() {
+      const input = document.getElementById('appSearch').value.toLowerCase();
+      const cards = document.querySelectorAll('.app-card');
+
+      cards.forEach(card => {
+        const title = card.querySelector('h3').innerText.toLowerCase();
+        const desc = card.querySelector('p').innerText.toLowerCase();
+        
+        if (title.includes(input) || desc.includes(input)) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
+  </script>
+</body>
+</html>

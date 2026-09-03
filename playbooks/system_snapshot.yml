@@ -1,0 +1,22 @@
+---
+- name: System Snapshot
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    volume_id: "vol-06cefc05d00ebc0fd"
+    aws_region: "us-east-1"
+
+  tasks:
+    - name: Create snapshot of specified volume
+      amazon.aws.ec2_snapshot:
+        volume_id: "{{ volume_id }}"
+        region: "{{ aws_region }}"
+        description: "AAP automated snapshot"
+        wait: false
+      register: snapshot_info
+
+    - name: Show created snapshot ID
+      ansible.builtin.debug:
+        msg: "Snapshot created successfully: {{ snapshot_info.snapshot_id }}"

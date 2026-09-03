@@ -1,0 +1,5 @@
+- name: Deploy HR Portal
+  hosts: webservers
+  become: true
+  roles:
+    - role: deploy_portal

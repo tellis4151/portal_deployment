@@ -1,0 +1,31 @@
+---
+- name: Portal Deployment Start Indicator
+  debug:
+    msg: "Portal Deployment is underway"
+
+- name: Backup existing portal template
+  ansible.builtin.shell:
+    cmd: "cp index.html index.html.bkup.{{ now(fmt='%Y-%m-%d') }}"
+    chdir: /home/ec2-user/node_app/public
+
+- name: Backup existing portal js
+  ansible.builtin.shell:
+    cmd: "cp app.js app.js.bkup.{{ now(fmt='%Y-%m-%d') }}"
+    chdir: /home/ec2-user/node_app
+
+- name: Stop POS Application 
+  ansible.builtin.shell:
+    cmd: /home/ec2-user/node_app/stop_node.sh
+    chdir: /home/ec2-user/node_app
+
+- name: Deploying new Portal
+  ansible.builtin.copy:
+    src: files/index.html.update
+    dest: /home/ec2-user/node_app/public/index.html
+    owner: ec2-user
+    group: ec2-user
+    mode: '0644'
+  notify: Start node js application
+
+
+      
